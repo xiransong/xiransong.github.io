@@ -20,18 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="【论文笔记】deepwalk &amp; node2vecDeepWalkRandom Walk + SkipGram node2vecsammary:  parameterized random walk">
+  <meta name="description" content="DeepWalk关键词:  Random Walk SkipGram Hierarchical Softmax  node2vec关键词: parameterized random walk  模型概要:与 DeepWalk 的区别：将随机游走中的顶点采样过程参数化，用参数 p 和 q 调整采样的概率分布。   p 较小时，倾向于“往回走”（类比BFS）；q 较小时，倾向于“向外走”（类比DFS）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【论文笔记】deepwalk &amp; node2vec">
+<meta property="og:title" content="【论文阅读】deepwalk &amp; node2vec">
 <meta property="og:url" content="http://yoursite.com/2020/08/21/%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk%20&%20node2vec/index.html">
 <meta property="og:site_name" content="my first blog">
-<meta property="og:description" content="【论文笔记】deepwalk &amp; node2vecDeepWalkRandom Walk + SkipGram node2vecsammary:  parameterized random walk">
+<meta property="og:description" content="DeepWalk关键词:  Random Walk SkipGram Hierarchical Softmax  node2vec关键词: parameterized random walk  模型概要:与 DeepWalk 的区别：将随机游走中的顶点采样过程参数化，用参数 p 和 q 调整采样的概率分布。   p 较小时，倾向于“往回走”（类比BFS）；q 较小时，倾向于“向外走”（类比DFS）">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="f:/hexo/source/_posts/【论文笔记】deepwalk%20&amp;%20node2vec.assets/image-20200821203557788.png">
+<meta property="og:image" content="f:/hexo/source/_posts/【论文笔记】deepwalk%20&amp;%20node2vec.assets/image-20200821204103715.png">
 <meta property="article:published_time" content="2020-08-21T08:09:38.064Z">
-<meta property="article:modified_time" content="2020-08-21T12:19:32.364Z">
+<meta property="article:modified_time" content="2020-08-21T13:08:38.292Z">
 <meta property="article:author" content="xiransong">
 <meta property="article:tag" content="graph_embedding">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:/hexo/source/_posts/【论文笔记】deepwalk%20&amp;%20node2vec.assets/image-20200821203557788.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/21/%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk%20&%20node2vec/">
 
@@ -46,7 +49,7 @@
   };
 </script>
 
-  <title>【论文笔记】deepwalk & node2vec | my first blog</title>
+  <title>【论文阅读】deepwalk & node2vec | my first blog</title>
   
 
 
@@ -179,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【论文笔记】deepwalk & node2vec
+          【论文阅读】deepwalk & node2vec
         </h1>
 
         <div class="post-meta">
@@ -190,7 +193,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-08-21 16:09:38 / 修改时间：20:19:32" itemprop="dateCreated datePublished" datetime="2020-08-21T16:09:38+08:00">2020-08-21</time>
+              <time title="创建时间：2020-08-21 16:09:38 / 修改时间：21:08:38" itemprop="dateCreated datePublished" datetime="2020-08-21T16:09:38+08:00">2020-08-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -213,11 +216,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="【论文笔记】deepwalk-amp-node2vec"><a href="#【论文笔记】deepwalk-amp-node2vec" class="headerlink" title="【论文笔记】deepwalk &amp; node2vec"></a>【论文笔记】deepwalk &amp; node2vec</h1><h2 id="DeepWalk"><a href="#DeepWalk" class="headerlink" title="DeepWalk"></a>DeepWalk</h2><p>Random Walk + SkipGram</p>
-<h2 id="node2vec"><a href="#node2vec" class="headerlink" title="node2vec"></a>node2vec</h2><p>sammary:</p>
+        <h1 id="DeepWalk"><a href="#DeepWalk" class="headerlink" title="DeepWalk"></a>DeepWalk</h1><p>关键词:</p>
 <ul>
+<li>Random Walk</li>
+<li>SkipGram</li>
+<li>Hierarchical Softmax</li>
+</ul>
+<h1 id="node2vec"><a href="#node2vec" class="headerlink" title="node2vec"></a>node2vec</h1><h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词:"></a>关键词:</h2><ul>
 <li>parameterized random walk</li>
 </ul>
+<h2 id="模型概要"><a href="#模型概要" class="headerlink" title="模型概要:"></a>模型概要:</h2><p>与 DeepWalk 的区别：将随机游走中的顶点采样过程参数化，用参数 p 和 q 调整采样的概率分布。</p>
+<img src="F:\hexo\source\_posts\【论文笔记】deepwalk &amp; node2vec.assets\image-20200821203557788.png" alt="image-20200821203557788" style="zoom: 67%;" />
+
+<p>p 较小时，倾向于“往回走”（类比BFS）；q 较小时，倾向于“向外走”（类比DFS）。</p>
+<img src="F:\hexo\source\_posts\【论文笔记】deepwalk &amp; node2vec.assets\image-20200821204103715.png" alt="image-20200821204103715" style="zoom: 67%;" />
+
+<h2 id="Motivation-amp-Interpretation"><a href="#Motivation-amp-Interpretation" class="headerlink" title="Motivation &amp; Interpretation"></a>Motivation &amp; Interpretation</h2><h4 id="motivation-1"><a href="#motivation-1" class="headerlink" title="motivation 1:"></a>motivation 1:</h4><p>文中提及了关于顶点相似度的两个概念：Homophily 与 Structural Equivalence。</p>
+<blockquote>
+<p>Homophily: nodes that are highly interconnected and belong to similar network clusters or communities should be embedded closely together (e.g., nodes s1 and u in Figure 1 belong to the same network community).</p>
+<p>Structural Equivalence: nodes that have similar structural roles in networks should be embedded closely together (e.g., nodes u and s6 in Figure 1 act as hubs of their corresponding communities). </p>
+</blockquote>
+<p>作者认为BFS和DFS采样能够分别反应出 Homophily 与 Structural Equivalence。</p>
+<blockquote>
+<p>The neighborhoods sampled by BFS lead to embeddings that correspond closely to structural equivalence.</p>
+<p>In DFS, the sampled nodes more accurately reﬂect a macro-view of the neighborhood which is essential in inferring communities based on homophily</p>
+</blockquote>
+<h4 id="motivation-2"><a href="#motivation-2" class="headerlink" title="motivation 2:"></a>motivation 2:</h4><p>The authors believe that the added ﬂexibility in exploring neighborhoods is the key to learning richer representations.</p>
 
     </div>
 
@@ -298,7 +322,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk-amp-node2vec"><span class="nav-number">1.</span> <span class="nav-text">【论文笔记】deepwalk &amp; node2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DeepWalk"><span class="nav-number">1.1.</span> <span class="nav-text">DeepWalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node2vec"><span class="nav-number">1.2.</span> <span class="nav-text">node2vec</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DeepWalk"><span class="nav-number">1.</span> <span class="nav-text">DeepWalk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#node2vec"><span class="nav-number">2.</span> <span class="nav-text">node2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">2.1.</span> <span class="nav-text">关键词:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%A6%81"><span class="nav-number">2.2.</span> <span class="nav-text">模型概要:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation-amp-Interpretation"><span class="nav-number">2.3.</span> <span class="nav-text">Motivation &amp; Interpretation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#motivation-1"><span class="nav-number">2.3.0.1.</span> <span class="nav-text">motivation 1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#motivation-2"><span class="nav-number">2.3.0.2.</span> <span class="nav-text">motivation 2:</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -314,7 +338,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
