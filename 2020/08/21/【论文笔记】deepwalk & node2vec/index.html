@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="标签">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+  <meta name="description" content="【论文笔记】deepwalk &amp; node2vecDeepWalkRandom Walk + SkipGram node2vecsammary:  parameterized random walk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文笔记】deepwalk &amp; node2vec">
+<meta property="og:url" content="http://yoursite.com/2020/08/21/%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk%20&%20node2vec/index.html">
 <meta property="og:site_name" content="my first blog">
+<meta property="og:description" content="【论文笔记】deepwalk &amp; node2vecDeepWalkRandom Walk + SkipGram node2vecsammary:  parameterized random walk">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-08-18T10:01:10.000Z">
-<meta property="article:modified_time" content="2020-08-18T10:02:09.354Z">
+<meta property="article:published_time" content="2020-08-21T08:09:38.064Z">
+<meta property="article:modified_time" content="2020-08-21T12:19:32.364Z">
 <meta property="article:author" content="xiransong">
+<meta property="article:tag" content="graph_embedding">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/">
+<link rel="canonical" href="http://yoursite.com/2020/08/21/%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk%20&%20node2vec/">
 
 
 <script id="page-configurations">
@@ -38,13 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签 | my first blog
-</title>
+  <title>【论文笔记】deepwalk & node2vec | my first blog</title>
   
 
 
@@ -156,51 +158,96 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk%20&%20node2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Sakurajima_Mai-1.jpg">
+      <meta itemprop="name" content="xiransong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="my first blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【论文笔记】deepwalk & node2vec
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">标签
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2020-08-21 16:09:38 / 修改时间：20:19:32" itemprop="dateCreated datePublished" datetime="2020-08-21T16:09:38+08:00">2020-08-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/graph-embedding/" itemprop="url" rel="index"><span itemprop="name">graph_embedding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="【论文笔记】deepwalk-amp-node2vec"><a href="#【论文笔记】deepwalk-amp-node2vec" class="headerlink" title="【论文笔记】deepwalk &amp; node2vec"></a>【论文笔记】deepwalk &amp; node2vec</h1><h2 id="DeepWalk"><a href="#DeepWalk" class="headerlink" title="DeepWalk"></a>DeepWalk</h2><p>Random Walk + SkipGram</p>
+<h2 id="node2vec"><a href="#node2vec" class="headerlink" title="node2vec"></a>node2vec</h2><p>sammary:</p>
+<ul>
+<li>parameterized random walk</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/graph-embedding/" rel="tag"># graph_embedding</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/18/Test/" rel="prev" title="Test">
+      <i class="fa fa-chevron-left"></i> Test
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-              目前共计 1 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/graph-embedding/" style="font-size: 12px; color: #ccc">graph_embedding</a>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -251,6 +298,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E3%80%91deepwalk-amp-node2vec"><span class="nav-number">1.</span> <span class="nav-text">【论文笔记】deepwalk &amp; node2vec</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DeepWalk"><span class="nav-number">1.1.</span> <span class="nav-text">DeepWalk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node2vec"><span class="nav-number">1.2.</span> <span class="nav-text">node2vec</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
